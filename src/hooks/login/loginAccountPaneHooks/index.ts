@@ -4,17 +4,21 @@
  */
 import { reactive, ref } from "vue";
 import type { IAccountPaneData } from "./type";
-import type { ILoginActionResponseInternalData } from "@/service/modules/login/type";
+import type {
+  ILoginActionResponseInternalData,
+  ILoginActionRememberStatus
+} from "@/service/modules/login/type";
 import useLoginStore from "@/store/login/index";
-
-// 定义帐号登录的表单信息
-const accountPaneData = reactive<IAccountPaneData>({
-  name: "",
-  password: ""
-});
+import { localCache } from "@/storage";
+import { REMEMBERSTATUS, USERINFO } from "@/constant";
 
 // 定义被选中的tab值,默认选中帐号密码登录tab栏
 const selectedTab = ref<string>("account");
+
+// 定义记住密码的状态,默认false不记住密码
+const rememberStatus = ref<boolean>(
+  localCache.getItem(REMEMBERSTATUS) ?? false
+);
 
 // 获取帐号密码登录表单的组件实例对象
 /**
@@ -30,8 +34,21 @@ const useComponentInstance = <T extends abstract new (...args: any) => any>(
   return componentInstance;
 };
 
+/**
+ * 在封装帐号登录表单的数据遇到的问题：
+ *  定义帐号登录的表单信息的代码不能放到外面，
+ *  如果放在外面的话，用户输入完之后，在重新进入页面的时候
+ *  会有缓存的效果。所以需要放到函数内部，让每次执行的时候
+ *  都会重新加载。
+ *
+ */
 // 获取帐号登录表单的数据
 const useAccountPaneData = () => {
+  // 定义帐号登录的表单信息
+  const accountPaneData = reactive<IAccountPaneData>({
+    name: localCache.getItem(USERINFO, "name") ?? "",
+    password: localCache.getItem(USERINFO, "password") ?? ""
+  });
   return accountPaneData;
 };
 
@@ -40,8 +57,15 @@ const useSelectedTab = () => {
   return selectedTab;
 };
 
+// 获取记住密码的状态
+const useRememberStatus = () => {
+  return rememberStatus;
+};
+
 // 设置loginStore中的状态
-const setLoginStoreState = (newState: ILoginActionResponseInternalData) => {
+const setLoginStoreState = (
+  newState: ILoginActionResponseInternalData | ILoginActionRememberStatus
+) => {
   const loginStore = useLoginStore();
   loginStore.$patch((state) => {
     Object.assign(state, newState);
@@ -52,5 +76,6 @@ export {
   useAccountPaneData,
   useSelectedTab,
   useComponentInstance,
-  setLoginStoreState
+  setLoginStoreState,
+  useRememberStatus
 };

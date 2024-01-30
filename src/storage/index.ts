@@ -10,8 +10,8 @@ enum ECacheType {
 
 // Cache的接口
 interface ICache {
-  setItem: (key: string, value: any) => void;
-  // getItem: (key: string) => any;
+  setItem: (key: string, value: any) => any;
+  getItem: (key: string) => any;
   clearItem: (key: string) => void;
   clear: () => void;
 }
@@ -24,19 +24,20 @@ class Cache implements ICache {
       cacheType === ECacheType.SessionCache ? sessionStorage : localStorage;
   }
   // 设置缓存
-  public setItem(key: string, value: any): void {
-    if (value) {
-      this.storage.setItem(key, JSON.stringify(value));
-    }
+  public setItem(cacheName: string, value: any): any {
+    this.storage.setItem(cacheName, JSON.stringify(value));
   }
 
   // 获取缓存
-  public getItem(cacheName: string, key: string): any {
-    const isLocalCache = this.storage.getItem(cacheName);
-    if (isLocalCache) {
-      const localCacheParse = JSON.parse(isLocalCache);
-      const isKey = Object.keys(localCacheParse).includes(key);
-      if (isKey) return localCacheParse[key];
+  public getItem(cacheName: string, key?: string): any {
+    const isExistCache = this.storage.getItem(cacheName);
+    // 不设置key
+    if (isExistCache && !key) return JSON.parse(isExistCache);
+    // 设置key的情况
+    if (isExistCache && key) {
+      const isExistKey = Object.keys(JSON.parse(isExistCache)).includes(key);
+      const storageValue = JSON.parse(isExistCache);
+      if (isExistKey) return storageValue[key];
     }
   }
 

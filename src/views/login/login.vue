@@ -37,7 +37,11 @@
       <div class="login-body-footer">
         <!-- 记住密码模块部分 -->
         <span class="remember">
-          <el-checkbox label="记住密码" size="large" />
+          <el-checkbox
+            label="记住密码"
+            size="large"
+            v-model="rememeberStatus"
+          />
         </span>
         <span class="forget">
           <el-link target="_blank" :underline="false">忘记密码</el-link>
@@ -55,15 +59,35 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from "vue";
 import LoginAccountPaneForm from "@/components/login/LoginAccountPaneForm.vue";
-import { useSelectedTab, useComponentInstance } from "@/hooks/login/index";
+import {
+  useSelectedTab,
+  useComponentInstance,
+  useRememberStatus,
+  setLoginStoreState
+} from "@/hooks/login/index";
 import type { IloginStrategyKey } from "./type/index";
-
+import { localCache } from "@/storage";
+import { REMEMBERSTATUS } from "@/constant";
 // 获取被选中的tabs
 const selectedTab = useSelectedTab();
 
 // 获取到帐号密码登录的表单组件对象
 const loginAccountPaneFormInstance = useComponentInstance(LoginAccountPaneForm);
+
+// 获取记住密码的状态
+const rememeberStatus = useRememberStatus();
+
+// 监听记住密码的状态，将其保存在本地进行存储
+watch(rememeberStatus, (status) => {
+  // 存储到pinia中
+  setLoginStoreState({
+    rememberStatus: status
+  });
+  // 本地化持久存储
+  localCache.setItem(REMEMBERSTATUS, status);
+});
 
 // 点击登录按钮
 const handelLoginClick = () => {
@@ -73,7 +97,7 @@ const handelLoginClick = () => {
    * 2. 利用element-puls表单组件验证用户输入的值是否通过校验，还是要交给子组件来处理登录验证的逻辑，父组件调用子组件的方法，这里可能只会出现获取的对象只有一个skip属性，因为子组件没有向外暴露属性
    */
   const accountLoginModule = () => {
-    loginAccountPaneFormInstance.value?.loginAction();
+    loginAccountPaneFormInstance.value?.loginAction(rememeberStatus.value);
   };
 
   const passwordLoginModule = () => {

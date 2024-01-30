@@ -1,19 +1,18 @@
 import { defineStore } from "pinia";
+import { ElMessage } from "element-plus";
 import { loginActionApi } from "@/service/modules/login";
 import { setLoginStoreState } from "@/hooks/login/index";
 import { localCache } from "@/storage";
 import type { ILoginStoreState } from "./type";
 import type { ILoginActionParams } from "@/service/modules/login/type";
-
-// 定义loginStore本地化常量
-const LOGINSTORELOCAL = "localLoginStore";
+import { LOGINSTORELOCAL, REMEMBERSTATUS, USERINFO } from "@/constant";
+import router from "@/router";
 
 export default defineStore("loginStore", {
   // 定义state函数返回值的类型
   state: (): ILoginStoreState => ({
-    id: localCache.getItem(LOGINSTORELOCAL, "id") ?? -1,
-    name: localCache.getItem(LOGINSTORELOCAL, "name") ?? "",
-    token: localCache.getItem(LOGINSTORELOCAL, "token") ?? ""
+    token: localCache.getItem(LOGINSTORELOCAL, "token") ?? "",
+    rememberStatus: localCache.getItem(REMEMBERSTATUS) ?? false
   }),
   actions: {
     async loginAction(params: ILoginActionParams) {
@@ -24,9 +23,24 @@ export default defineStore("loginStore", {
           setLoginStoreState(loginResponseData.data);
           // 本地持久化存储用户登录成功的信息
           localCache.setItem(LOGINSTORELOCAL, loginResponseData.data);
+          if (params.rememeberStatus) {
+            localCache.setItem(USERINFO, {
+              name: params.name,
+              password: params.password
+            });
+          } else {
+            localCache.clearItem(USERINFO);
+          }
+          // 登录成功，跳转到主页
+          router.push("/main");
         }
       } catch (err) {
         console.log("err: =>", err);
+        // 请求异常错误的提示
+        ElMessage({
+          type: "error",
+          message: `${err}`
+        });
       }
     }
   }

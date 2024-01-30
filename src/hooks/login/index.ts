@@ -2,12 +2,14 @@ import {
   useAccountPaneData,
   useSelectedTab,
   useComponentInstance,
-  setLoginStoreState
+  setLoginStoreState,
+  useRememberStatus
 } from "./loginAccountPaneHooks";
 
 export {
   useAccountPaneData,
   useSelectedTab,
   useComponentInstance,
-  setLoginStoreState
+  setLoginStoreState,
+  useRememberStatus
 };

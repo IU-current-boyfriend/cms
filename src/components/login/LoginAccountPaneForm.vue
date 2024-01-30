@@ -1,6 +1,5 @@
 <!-- 登录页面的帐号登录模块表单 -->
 <template>
-  <!-- <div class="account-pane-form"> -->
   <el-form
     label-width="60px"
     :model="accountPaneData"
@@ -21,7 +20,6 @@
       />
     </el-form-item>
   </el-form>
-  <!-- </div> -->
 </template>
 
 <script lang="ts" setup>
@@ -39,14 +37,14 @@ const accountPaneForm = ref<InstanceType<typeof ElForm>>();
 
 const loginStore = useLoginStore();
 
-const loginAction = () => {
+const loginAction = (rememeberStatus: boolean) => {
   accountPaneForm.value?.validate((valid) => {
     if (valid) {
       // 获取用户输入的帐号和密码
       const account = accountPaneData.name;
       const password = accountPaneData.password;
       // 调用store存储数据
-      loginStore.loginAction({ name: account, password });
+      loginStore.loginAction({ name: account, password, rememeberStatus });
     } else {
       ElMessage({
         message: "请校验用户名或者密码是否合法",
