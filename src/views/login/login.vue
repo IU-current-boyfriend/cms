@@ -69,7 +69,7 @@ import {
 } from "@/hooks/login/index";
 import type { IloginStrategyKey } from "./type/index";
 import { localCache } from "@/storage";
-import { REMEMBERSTATUS } from "@/constant";
+import { REMEMBER_STATUS } from "@/constant";
 // 获取被选中的tabs
 const selectedTab = useSelectedTab();
 
@@ -86,7 +86,7 @@ watch(rememeberStatus, (status) => {
     rememberStatus: status
   });
   // 本地化持久存储
-  localCache.setItem(REMEMBERSTATUS, status);
+  localCache.setItem(REMEMBER_STATUS, status);
 });
 
 // 点击登录按钮

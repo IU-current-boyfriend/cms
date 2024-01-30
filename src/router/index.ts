@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { LOGINSTORELOCAL } from "@/constant";
 import { localCache } from "@/storage";
+import { LOGIN_RESPONSE_DATA } from "@/constant";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -26,13 +26,9 @@ const router = createRouter({
   ]
 });
 
-router.beforeEach((to, from, next) => {
-  const token = localCache.getItem(LOGINSTORELOCAL, "token");
-  // 如果用户没有处于登录的状态，想导航到main页面，是要跳转到login页面的
-  if (to.path.startsWith("/main") && !token) next("/login");
-  // 如果用户已经处于登录状态，想导航到login页面，跳转到main页面
-  // if (token && to.path === "/login") next("/main");
-  next();
+router.beforeEach((to) => {
+  const token = localCache.getItem("token", LOGIN_RESPONSE_DATA);
+  if (to.path.startsWith("/main") && !token) return "/login";
 });
 
 export default router;

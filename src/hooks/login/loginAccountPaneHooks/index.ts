@@ -8,17 +8,16 @@ import type {
   ILoginActionResponseInternalData,
   ILoginActionRememberStatus
 } from "@/service/modules/login/type";
+
 import useLoginStore from "@/store/login/index";
 import { localCache } from "@/storage";
-import { REMEMBERSTATUS, USERINFO } from "@/constant";
+import { USER_INFO } from "@/constant";
 
 // 定义被选中的tab值,默认选中帐号密码登录tab栏
 const selectedTab = ref<string>("account");
 
 // 定义记住密码的状态,默认false不记住密码
-const rememberStatus = ref<boolean>(
-  localCache.getItem(REMEMBERSTATUS) ?? false
-);
+const rememberStatus = ref<boolean>(false);
 
 // 获取帐号密码登录表单的组件实例对象
 /**
@@ -46,8 +45,8 @@ const useComponentInstance = <T extends abstract new (...args: any) => any>(
 const useAccountPaneData = () => {
   // 定义帐号登录的表单信息
   const accountPaneData = reactive<IAccountPaneData>({
-    name: localCache.getItem(USERINFO, "name") ?? "",
-    password: localCache.getItem(USERINFO, "password") ?? ""
+    name: localCache.getItem("name", USER_INFO) ?? "",
+    password: localCache.getItem("password", USER_INFO) ?? ""
   });
   return accountPaneData;
 };

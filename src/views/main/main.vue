@@ -7,10 +7,10 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
 import { localCache } from "@/storage";
-import { LOGINSTORELOCAL } from "@/constant";
+import { LOGIN_RESPONSE_DATA } from "@/constant";
 const router = useRouter();
 const toBackLogin = () => {
-  localCache.clearItem(LOGINSTORELOCAL);
+  localCache.clear(LOGIN_RESPONSE_DATA);
   router.push("/login");
 };
 </script>
