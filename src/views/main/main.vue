@@ -1,17 +1,10 @@
 <template>
-  <div>
-    欢迎来到首页
-    <el-button type="primary" @click="toBackLogin">回到登录页面</el-button>
-  </div>
+  <div>欢迎来到登录页面～欢迎您</div>
 </template>
 <script lang="ts" setup>
-import { useRouter } from "vue-router";
-import { localCache } from "@/storage";
-import { LOGIN_RESPONSE_DATA } from "@/constant";
-const router = useRouter();
-const toBackLogin = () => {
-  localCache.clear(LOGIN_RESPONSE_DATA);
-  router.push("/login");
-};
+import useStore from "@/store/login/index";
+
+const store = useStore();
+console.log(store);
 </script>
 <style scoped></style>

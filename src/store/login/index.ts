@@ -25,8 +25,8 @@ export default defineStore("loginStore", {
   // 定义state函数返回值的类型
   state: (): ILoginStoreState => ({
     token: localCache.getItem("token", LOGIN_RESPONSE_DATA) ?? "",
-    userInfo: localCache.getItem("userInfo", LOGIN_USER_INFO) ?? {},
-    userMenu: localCache.getItem("userMenu", LOGIN_USER_MENU) ?? [],
+    userInfo: localCache.getItem(LOGIN_USER_INFO) ?? {},
+    userMenu: localCache.getItem(LOGIN_USER_MENU) ?? [],
     rememberStatus: localCache.getItem(REMEMBER_STATUS) ?? false
   }),
   actions: {
