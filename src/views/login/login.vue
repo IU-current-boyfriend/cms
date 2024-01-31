@@ -119,8 +119,8 @@ const handelLoginClick = () => {
 <style lang="less" scoped>
 .login-container {
   display: flex;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: url("@/assets/images/login-bg.svg") no-repeat;
   justify-content: center;
   align-items: center;

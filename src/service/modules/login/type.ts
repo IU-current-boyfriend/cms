@@ -49,6 +49,15 @@ export interface ILoginUserInfoResponseData {
   data: ILoginUserInfoResponse;
 }
 
+export interface ILoginUserMenuResponseDataElement {
+  icon: string;
+  id: number;
+  name: string;
+  sort: number;
+  type: number;
+  url: string;
+  children?: ILoginUserMenuResponseDataElement[] | null;
+}
 export interface ILoginUserMenuResponseData {
-  data: any[];
+  data: ILoginUserMenuResponseDataElement[];
 }
