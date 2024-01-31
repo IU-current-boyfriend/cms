@@ -3,7 +3,11 @@ import {
   useSelectedTab,
   useComponentInstance,
   setLoginStoreState,
-  useRememberStatus
+  useRememberStatus,
+  setRememberAction,
+  saveUserLoginToken,
+  saveUserLoginInfo,
+  saveUserLoginMenu
 } from "./loginAccountPaneHooks";
 
 export {
@@ -11,5 +15,9 @@ export {
   useSelectedTab,
   useComponentInstance,
   setLoginStoreState,
-  useRememberStatus
+  useRememberStatus,
+  setRememberAction,
+  saveUserLoginToken,
+  saveUserLoginInfo,
+  saveUserLoginMenu
 };

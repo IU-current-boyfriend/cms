@@ -1,7 +1,7 @@
 import CURequest from "./request/index";
 import config from "./config/index";
 
-export const homeRequest = new CURequest({
+export const loginRequest = new CURequest({
   ...config,
   interceptors: {
     requestOnFufilledCeptor(config) {

@@ -10,11 +10,45 @@ export interface ILoginActionResponseData {
 }
 
 export interface ILoginActionResponseInternalData {
-  id: number;
-  name: string;
-  token: string;
+  id?: number;
+  name?: string;
+  token?: string;
+  userInfo?: ILoginUserInfoResponse;
+  userMenu?: any[];
 }
 
 export interface ILoginActionRememberStatus {
   rememberStatus: boolean;
+}
+
+export interface ILoginUserInfoResponse {
+  id: number;
+  name: string;
+  realname: string;
+  cellphone: number;
+  enable: number;
+  createAt: string;
+  updateAt: string;
+  role: {
+    id: number;
+    name: string;
+    intro: string;
+    createAt: string;
+    updateAt: string;
+  };
+  department: {
+    id: number;
+    name: string;
+    parentId: any;
+    createAt: string;
+    updateAt: string;
+    leader: string;
+  };
+}
+export interface ILoginUserInfoResponseData {
+  data: ILoginUserInfoResponse;
+}
+
+export interface ILoginUserMenuResponseData {
+  data: any[];
 }

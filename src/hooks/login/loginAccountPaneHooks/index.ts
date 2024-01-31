@@ -5,13 +5,22 @@
 import { reactive, ref } from "vue";
 import type { IAccountPaneData } from "./type";
 import type {
+  ILoginActionParams,
   ILoginActionResponseInternalData,
-  ILoginActionRememberStatus
+  ILoginActionRememberStatus,
+  ILoginActionResponseData,
+  ILoginUserInfoResponseData,
+  ILoginUserMenuResponseData
 } from "@/service/modules/login/type";
 
 import useLoginStore from "@/store/login/index";
 import { localCache } from "@/storage";
-import { USER_INFO } from "@/constant";
+import {
+  LOGIN_INFO,
+  LOGIN_RESPONSE_DATA,
+  LOGIN_USER_INFO,
+  LOGIN_USER_MENU
+} from "@/constant";
 
 // 定义被选中的tab值,默认选中帐号密码登录tab栏
 const selectedTab = ref<string>("account");
@@ -45,8 +54,8 @@ const useComponentInstance = <T extends abstract new (...args: any) => any>(
 const useAccountPaneData = () => {
   // 定义帐号登录的表单信息
   const accountPaneData = reactive<IAccountPaneData>({
-    name: localCache.getItem("name", USER_INFO) ?? "",
-    password: localCache.getItem("password", USER_INFO) ?? ""
+    name: localCache.getItem("name", LOGIN_INFO) ?? "",
+    password: localCache.getItem("password", LOGIN_INFO) ?? ""
   });
   return accountPaneData;
 };
@@ -71,10 +80,68 @@ const setLoginStoreState = (
   });
 };
 
+// 执行记住密码的逻辑
+// 记住密码的逻辑
+const setRememberAction = (params: ILoginActionParams) => {
+  if (params.rememeberStatus) {
+    localCache.setItem("name", params.name, LOGIN_INFO);
+    localCache.setItem("password", params.password, LOGIN_INFO);
+  } else {
+    localCache.clear(LOGIN_INFO);
+  }
+};
+
+// 存储用户登录的token逻辑
+const saveUserLoginToken = (
+  loginResponseData: ILoginActionResponseData,
+  params: ILoginActionParams
+) => {
+  // 获取用户登录成功的信息，并且更新pinia的状态，只存储token
+  setLoginStoreState({
+    token: loginResponseData.data.token
+  });
+
+  // 本地持久化存储用户登录成功的信息
+  localCache.setItem(LOGIN_RESPONSE_DATA, loginResponseData.data);
+
+  // 执行记住密码的逻辑
+  setRememberAction(params);
+};
+
+// 存储用户登录的信息逻辑
+const saveUserLoginInfo = (
+  loginUserInfoResponseData: ILoginUserInfoResponseData
+): number => {
+  // 获取用户的角色id
+  const userRoleId = loginUserInfoResponseData?.data.role?.id;
+
+  // 将用户信息保存到pinia状态中
+  setLoginStoreState({
+    userInfo: loginUserInfoResponseData.data
+  });
+  // 本地持久化存储用户信息
+  localCache.setItem(LOGIN_USER_INFO, loginUserInfoResponseData.data);
+
+  return userRoleId;
+};
+
+// 存储用户登录后的菜单信息
+const saveUserLoginMenu = (loginUserMenu: ILoginUserMenuResponseData) => {
+  setLoginStoreState({
+    userMenu: loginUserMenu.data
+  });
+  // 本地化持久化存储用户菜单
+  localCache.setItem(LOGIN_USER_MENU, loginUserMenu.data);
+};
+
 export {
   useAccountPaneData,
   useSelectedTab,
   useComponentInstance,
   setLoginStoreState,
-  useRememberStatus
+  useRememberStatus,
+  setRememberAction,
+  saveUserLoginToken,
+  saveUserLoginInfo,
+  saveUserLoginMenu
 };

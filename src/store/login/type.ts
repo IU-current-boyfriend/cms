@@ -1,6 +1,10 @@
+import type {
+  ILoginUserInfoResponseData,
+  ILoginUserMenuResponseData
+} from "@/service/modules/login/type";
 export interface ILoginStoreState {
-  id?: number;
-  name?: string;
   token: string;
   rememberStatus?: boolean;
+  userInfo: ILoginUserInfoResponseData;
+  userMenu: ILoginUserMenuResponseData;
 }

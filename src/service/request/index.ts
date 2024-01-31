@@ -1,6 +1,8 @@
 import axios from "axios";
 import type { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import type { IAxiosRequestConfig } from "./type";
+import { localCache } from "@/storage";
+import { LOGIN_RESPONSE_DATA } from "@/constant";
 
 /**
  * 两个问题：
@@ -25,6 +27,11 @@ export default class CURequest {
     this._instance.interceptors.request.use(
       (config) => {
         console.log("全局请求成功拦截器", config);
+        // 携带token
+        const token = localCache.getItem("token", LOGIN_RESPONSE_DATA) ?? "";
+        if (token && config) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
         return config;
       },
       (err) => {
@@ -58,7 +65,9 @@ export default class CURequest {
   request<T = any>(config: IAxiosRequestConfig<T>) {
     // 单个接口的请求拦截器
     if (config?.interceptors?.requestOnFufilledCeptor) {
-      config = config.interceptors.requestOnFufilledCeptor(<InternalAxiosRequestConfig>config);
+      config = config.interceptors.requestOnFufilledCeptor(
+        <InternalAxiosRequestConfig>config
+      );
     }
 
     // 处理配置项
@@ -80,7 +89,9 @@ export default class CURequest {
     });
   }
 
-  private _createAxiosOptions<T>(config: IAxiosRequestConfig<T>): IAxiosRequestConfig<T> {
+  private _createAxiosOptions<T>(
+    config: IAxiosRequestConfig<T>
+  ): IAxiosRequestConfig<T> {
     const env = this._requestConfig.envlopment;
     let isMock = config.mock;
     const method = config.method || "get";

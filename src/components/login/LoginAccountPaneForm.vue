@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineExpose, ref } from "vue";
+import { ref } from "vue";
 import type { ElForm } from "element-plus";
 import { ElMessage } from "element-plus";
 import { useAccountPaneData } from "@/hooks/login/index";
