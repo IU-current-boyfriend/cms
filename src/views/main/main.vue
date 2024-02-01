@@ -10,7 +10,9 @@
           <!-- main页面的header组件 -->
           <main-header></main-header>
         </el-header>
-        <el-main class="main-container">Main</el-main>
+        <el-main class="main-container">
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>

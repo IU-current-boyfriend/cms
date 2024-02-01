@@ -9,4 +9,4 @@ import App from "./App.vue";
 
 const app = createApp(App);
 
-app.use(icon).use(router).use(pinia).mount("#app");
+app.use(icon).use(pinia).use(router).mount("#app");

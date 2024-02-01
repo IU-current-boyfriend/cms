@@ -14,6 +14,7 @@
       <el-menu
         class="el-menu-vertical-demo"
         :collapse="!menExpandBtnStatus"
+        :default-active="`${menuDefaultActiveId}`"
         text-color="#b7bdc3"
         active-text-color="#fff"
         background-color="#001529"
@@ -33,6 +34,7 @@
               v-for="subMenu of menu.children"
               :key="subMenu.id"
               :index="`${subMenu.id}`"
+              @click="handleClickMenuSubItem(subMenu)"
             >
               <template #title>
                 <span>{{ subMenu.name }}</span>
@@ -47,10 +49,23 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useMenExpandBtnStatus, useMenuData } from "@/hooks/main/index";
+import { useRouter, useRoute } from "vue-router";
+import type { ILoginUserMenuResponseDataElement } from "@/service/modules/login/type";
+import {
+  useMenExpandBtnStatus,
+  useMenuData,
+  getMenuDefaultId
+} from "@/hooks/main/index";
 import { formatMenuIconName } from "@/utils/index";
+
+// 获取路由实例对象
+const router = useRouter();
+const route = useRoute();
+
 // 获取左菜单栏的数据
 const menuData = useMenuData();
+
+const menuDefaultActiveId = getMenuDefaultId(route.path);
 
 // 获取到展开合并按钮的状态
 const menExpandBtnStatus = useMenExpandBtnStatus();
@@ -68,6 +83,12 @@ const cMenuIconName = computed(() => {
 const cMenuTitleShow = computed(() => {
   return menExpandBtnStatus.value ? true : false;
 });
+
+// 点击菜单栏切换路由
+const handleClickMenuSubItem = (subMenu: ILoginUserMenuResponseDataElement) => {
+  // 切换跳转路由
+  router.push(subMenu.url);
+};
 </script>
 
 <style lang="less" scoped>

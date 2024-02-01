@@ -1,7 +1,13 @@
 import {
   useMenuData,
   useMenExpandBtnStatus,
-  setMenuExpandBtnStatus
+  setMenuExpandBtnStatus,
+  getMenuDefaultId
 } from "./asideMenuHooks";
 
-export { useMenuData, useMenExpandBtnStatus, setMenuExpandBtnStatus };
+export {
+  useMenuData,
+  useMenExpandBtnStatus,
+  setMenuExpandBtnStatus,
+  getMenuDefaultId
+};

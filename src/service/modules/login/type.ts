@@ -46,7 +46,7 @@ export interface ILoginUserInfoResponse {
   };
 }
 export interface ILoginUserInfoResponseData {
-  data: ILoginUserInfoResponse;
+  data?: ILoginUserInfoResponse;
 }
 
 export interface ILoginUserMenuResponseDataElement {
