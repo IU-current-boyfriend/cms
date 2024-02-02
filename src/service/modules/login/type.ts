@@ -56,6 +56,7 @@ export interface ILoginUserMenuResponseDataElement {
   sort: number;
   type: number;
   url: string;
+  parentId?: number;
   children?: ILoginUserMenuResponseDataElement[] | null;
 }
 export interface ILoginUserMenuResponseData {

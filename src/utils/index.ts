@@ -29,26 +29,36 @@ export const setDyNamicsRouteMap = (
       eager: true
     }
   );
+
   // 递归处理动态路由映射
-  const deepCollectDynamicRoute = (
+  const collectDynamicRoute = (
     menuChildren: ILoginUserMenuResponseDataElement[],
     dynamicsRoute: RouteRecordRaw[]
   ) => {
     let lock = true;
     const deepCollectDynamicRoute = (
       menu: ILoginUserMenuResponseDataElement[],
-      routes: RouteRecordRaw[]
+      routes: RouteRecordRaw[],
+      topMenu?: ILoginUserMenuResponseDataElement
     ) => {
+      let collectedTopMenuCount = 0;
       menu.forEach((menuItem) => {
-        //一级路由不存在点击事件，所以不用处理
         if (menuItem.children && menuItem.children.length > 0) {
-          deepCollectDynamicRoute(menuItem.children, routes);
+          deepCollectDynamicRoute(menuItem.children, routes, menuItem);
         }
         for (let key in localRoutes) {
           const route = localRoutes[key].default;
           const routePath = route.path;
           if (routePath === menuItem.url) {
             lock && (firstMenu = menuItem);
+            // 设置面包屑顶层菜单重定向
+            topMenu &&
+              collectedTopMenuCount < 1 &&
+              routes.push({
+                path: topMenu.url,
+                redirect: route
+              });
+            collectedTopMenuCount++;
             routes.push(route);
             lock = false;
           }
@@ -57,7 +67,8 @@ export const setDyNamicsRouteMap = (
     };
     deepCollectDynamicRoute(menuChildren, dynamicsRoute);
   };
-  deepCollectDynamicRoute(menu, dynamicsRoute);
+
+  collectDynamicRoute(menu, dynamicsRoute);
   return dynamicsRoute;
 };
 

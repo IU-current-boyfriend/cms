@@ -111,9 +111,9 @@ const saveUserLoginToken = (
 // 存储用户登录的信息逻辑
 const saveUserLoginInfo = (
   loginUserInfoResponseData: ILoginUserInfoResponseData
-): number => {
+) => {
   // 获取用户的角色id
-  const userRoleId = loginUserInfoResponseData?.data.role?.id;
+  const userRoleId = loginUserInfoResponseData?.data?.role?.id;
 
   // 将用户信息保存到pinia状态中
   setLoginStoreState({

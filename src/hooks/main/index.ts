@@ -5,9 +5,12 @@ import {
   getMenuDefaultId
 } from "./asideMenuHooks";
 
+import { useBreadCrumbsNavMenu } from "./breadCrumbsHooks";
+
 export {
   useMenuData,
   useMenExpandBtnStatus,
   setMenuExpandBtnStatus,
-  getMenuDefaultId
+  getMenuDefaultId,
+  useBreadCrumbsNavMenu
 };

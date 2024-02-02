@@ -14,7 +14,7 @@
       <el-menu
         class="el-menu-vertical-demo"
         :collapse="!menExpandBtnStatus"
-        :default-active="`${menuDefaultActiveId}`"
+        :default-active="`${cMenuDefaultActiveId}`"
         text-color="#b7bdc3"
         active-text-color="#fff"
         background-color="#001529"
@@ -65,7 +65,7 @@ const route = useRoute();
 // 获取左菜单栏的数据
 const menuData = useMenuData();
 
-const menuDefaultActiveId = getMenuDefaultId(route.path);
+const cMenuDefaultActiveId = computed(() => getMenuDefaultId(route.path));
 
 // 获取到展开合并按钮的状态
 const menExpandBtnStatus = useMenExpandBtnStatus();

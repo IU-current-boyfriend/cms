@@ -9,7 +9,9 @@
           <component :is="cExpandBtnIconName"></component>
         </el-icon>
       </div>
-      <div class="bread-crumbs">面包屑的部分</div>
+      <div class="bread-crumbs">
+        <bread-crumbs></bread-crumbs>
+      </div>
     </div>
     <!-- 个人信息部分 -->
     <div class="person-info-container">
@@ -64,6 +66,8 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
+import BreadCrumbs from "./BreadCrumbs.vue";
 import {
   useMenExpandBtnStatus,
   setMenuExpandBtnStatus
@@ -75,7 +79,6 @@ import {
   LOGIN_USER_MENU,
   LOGIN_RESPONSE_DATA
 } from "@/constant";
-import { ElMessage } from "element-plus";
 
 // 获取路由实例对象
 const router = useRouter();

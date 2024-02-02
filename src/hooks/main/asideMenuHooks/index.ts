@@ -2,7 +2,7 @@
  * main页面左侧边栏hooks
  *
  */
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import useLoginStore from "@/store/login/index";
 import { getCurrentMenuIdByUrl } from "@/utils/index";
 
@@ -25,7 +25,7 @@ const setMenuExpandBtnStatus = (status: boolean) => {
 
 const getMenuDefaultId = (path: string) => {
   const store = useLoginStore();
-  return computed(() => getCurrentMenuIdByUrl(path, store.userMenu));
+  return getCurrentMenuIdByUrl(path, store.userMenu);
 };
 
 export {
