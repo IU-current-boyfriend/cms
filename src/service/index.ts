@@ -18,3 +18,21 @@ export const loginRequest = new CURequest({
     }
   }
 });
+
+export const systemRequest = new CURequest({
+  ...config,
+  interceptors: {
+    requestOnFufilledCeptor(config) {
+      return config;
+    },
+    requestOnRejectedCeptor(err) {
+      return Promise.reject(err);
+    },
+    responseOnFufilledCeptor(res) {
+      return res;
+    },
+    responseOnRejectedCeptor(err) {
+      return Promise.reject(err);
+    }
+  }
+});

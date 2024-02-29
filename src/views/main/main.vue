@@ -51,7 +51,7 @@ const cAsideWidth = computed(() => {
       }
     }
     .main-container {
-      background-color: skyblue;
+      background-color: #f0f2f5;
     }
   }
 }

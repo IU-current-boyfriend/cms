@@ -1,5 +1,7 @@
 import type { ILoginUserMenuResponseDataElement } from "@/service/modules/login/type";
 import type { RouteRecordRaw } from "vue-router";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
 // MenuIcon利用动态组件是不区分组件名称大小写的，所以这个工具函数可以不用
 export const formatMenuIconName = (iconName: string) => {
@@ -97,3 +99,12 @@ export const getCurrentMenuIdByUrl = (
 
 // 第一个菜单栏
 export let firstMenu: ILoginUserMenuResponseDataElement;
+
+// 时间日期的插件
+dayjs.extend(utc);
+export const utcFormat = (
+  utcString: string,
+  format = "YYYY-MM-DD HH:mm:ss"
+) => {
+  return dayjs.utc(utcString).utcOffset(8).format(format);
+};

@@ -26,12 +26,12 @@ export default class CURequest {
     // 全局请求的拦截器
     this._instance.interceptors.request.use(
       (config) => {
-        console.log("全局请求成功拦截器", config);
         // 携带token
         const token = localCache.getItem("token", LOGIN_RESPONSE_DATA) ?? "";
         if (token && config) {
           config.headers.Authorization = `Bearer ${token}`;
         }
+        console.log("全局请求成功拦截器", config);
         return config;
       },
       (err) => {
@@ -117,10 +117,18 @@ export default class CURequest {
   }
 
   get<T>(config: IAxiosRequestConfig<T>) {
-    this.request<T>({ ...config, method: "get" });
+    this.request<T>({ ...config, method: "GET" });
   }
 
   post<T>(config: IAxiosRequestConfig<T>) {
-    this.request<T>({ ...config, method: "post" });
+    this.request<T>({ ...config, method: "POST" });
+  }
+
+  delete<T>(config: IAxiosRequestConfig<T>) {
+    this.request<T>({ ...config, method: "DELETE" });
+  }
+
+  patch<T>(config: IAxiosRequestConfig<T>) {
+    this.request<T>({ ...config, method: "PATCH" });
   }
 }

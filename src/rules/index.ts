@@ -1,3 +1,3 @@
 import { accountPaneRule } from "./login/index";
-
-export { accountPaneRule };
+import { createUserRules } from "./user/index";
+export { accountPaneRule, createUserRules };

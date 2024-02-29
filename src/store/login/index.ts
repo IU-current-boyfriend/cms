@@ -22,6 +22,7 @@ import {
 } from "@/constant";
 import router from "@/router";
 import { setDyNamicsRouteMap, firstMenu } from "@/utils";
+import useMainStore from "../main/main";
 
 export default defineStore("loginStore", {
   // 定义state函数返回值的类型
@@ -63,6 +64,11 @@ export default defineStore("loginStore", {
               dynamicsRoute = setDyNamicsRouteMap(loginUserMenu.data);
             }
           }
+
+          // 添加角色集合菜单
+          const mainStore = useMainStore();
+          mainStore.fetchEntireDataAction();
+
           // 循环枚举添加动态路由
           dynamicsRoute.forEach((route) => {
             router.addRoute("main", route);
@@ -89,6 +95,8 @@ export default defineStore("loginStore", {
         this.token = token;
         this.userInfo = userInfo;
         this.userMenu = userMenu;
+        const mainStore = useMainStore();
+        mainStore.fetchEntireDataAction();
       }
       // 动态加载路由
       const dynamicsRoute = setDyNamicsRouteMap(this.userMenu);

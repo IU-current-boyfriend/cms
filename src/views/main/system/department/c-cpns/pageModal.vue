@@ -1,5 +1,5 @@
 <template>
-  <div class="department-container">department-container</div>
+  <div class="page-modal-container">pageModal</div>
 </template>
 
 <script setup lang="ts"></script>
